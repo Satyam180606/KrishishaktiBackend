@@ -25,7 +25,7 @@ data class AppConfig(
             
             val model = dotenv["OPENROUTER_MODEL"]
                 ?: System.getenv("OPENROUTER_MODEL")
-                ?: "nvidia/llama-nemotron-embed-vl-1b-v2:free"
+                ?: "nvidia/nemotron-3.5-lightning:free"
             
             val port = (dotenv["PORT"] ?: System.getenv("PORT") ?: "8080").toIntOrNull() ?: 8080
             
