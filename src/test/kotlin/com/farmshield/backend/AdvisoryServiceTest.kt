@@ -15,6 +15,7 @@ class AdvisoryServiceTest {
     private fun createMockAIService(response: String = VALID_RESPONSE): GenerativeAIService {
         return object : GenerativeAIService {
             override suspend fun generateAdvisory(userPrompt: String, systemPrompt: String): String = response
+            override suspend fun analyzeImage(imageBase64: String, mimeType: String, prompt: String, systemInstruction: String): String = response
             override fun close() {}
         }
     }
