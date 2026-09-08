@@ -48,6 +48,7 @@ class AdvisoryService(private val aiService: GenerativeAIService) {
 
             Only use information provided in the request or general model knowledge.
             Do not pretend to have live information.
+            Do not silently invent missing agricultural information. If the model lacks information, it should explicitly say so inside the required fields.
 
             For chemical recommendations, prioritize safety and instruct farmers to follow the product label and locally approved agricultural guidance.
 
@@ -56,6 +57,19 @@ class AdvisoryService(private val aiService: GenerativeAIService) {
             Use simple language suitable for farmers.
 
             Return the answer in the requested language.
+
+            Return EXACTLY this JSON structure. Do not return Markdown, code fences, explanations, headings, or additional fields outside the JSON object:
+            {
+              "problem": "string",
+              "likelyCause": "string",
+              "actions": ["string"],
+              "prevention": ["string"],
+              "expertHelp": {
+                "recommended": true,
+                "reason": "string"
+              },
+              "confidence": "High"
+            }
         """.trimIndent()
     }
 
@@ -118,12 +132,14 @@ class AdvisoryService(private val aiService: GenerativeAIService) {
 
     fun parseAdvisoryResponse(rawJson: String): AdvisoryResponse {
         return try {
-            val cleaned = rawJson.trim()
-                .removePrefix("```json")
-                .removePrefix("```JSON")
-                .removePrefix("```")
-                .removeSuffix("```")
-                .trim()
+            val start = rawJson.indexOf('{')
+            val end = rawJson.lastIndexOf('}')
+            val cleaned = if (start != -1 && end != -1 && end >= start) {
+                rawJson.substring(start, end + 1)
+            } else {
+                rawJson
+            }
+
             val parsed = json.decodeFromString<AdvisoryResponse>(cleaned)
             // Validate that essential fields are not empty
             require(parsed.problem.isNotBlank()) { "Missing problem field" }

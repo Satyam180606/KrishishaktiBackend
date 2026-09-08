@@ -41,7 +41,8 @@ class GeminiService(
             systemInstruction = Content(parts = listOf(Part(text = systemPrompt + "\nIMPORTANT: Return ONLY valid JSON."))),
             contents = listOf(
                 Content(parts = listOf(Part(text = userPrompt)))
-            )
+            ),
+            generationConfig = GenerationConfig(responseMimeType = "application/json")
         )
         return executeGeminiRequest(request)
     }
@@ -61,7 +62,8 @@ class GeminiService(
                         Part(inlineData = InlineData(mimeType = mimeType, data = imageBase64))
                     )
                 )
-            )
+            ),
+            generationConfig = GenerationConfig(responseMimeType = "application/json")
         )
         return executeGeminiRequest(request)
     }
@@ -110,7 +112,13 @@ class GenerativeApiException(message: String, cause: Throwable? = null) : Runtim
 @Serializable
 data class GeminiRequest(
     val contents: List<Content>,
-    val systemInstruction: Content? = null
+    val systemInstruction: Content? = null,
+    val generationConfig: GenerationConfig? = null
+)
+
+@Serializable
+data class GenerationConfig(
+    val responseMimeType: String? = null
 )
 
 @Serializable

@@ -149,12 +149,14 @@ class DiagnosisService(private val aiService: GenerativeAIService) {
 
     fun parseDiagnosisResponse(rawJson: String, fallbackCrop: String?): StructuredDiagnosis {
         return try {
-            val cleaned = rawJson.trim()
-                .removePrefix("```json")
-                .removePrefix("```JSON")
-                .removePrefix("```")
-                .removeSuffix("```")
-                .trim()
+            val start = rawJson.indexOf('{')
+            val end = rawJson.lastIndexOf('}')
+            val cleaned = if (start != -1 && end != -1 && end >= start) {
+                rawJson.substring(start, end + 1)
+            } else {
+                rawJson
+            }
+
             val parsed = json.decodeFromString<StructuredDiagnosis>(cleaned)
             val cropName = if (parsed.crop.isNotBlank() && !parsed.crop.equals("Crop", ignoreCase = true)) {
                 parsed.crop
