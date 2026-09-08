@@ -1,11 +1,12 @@
-FROM gradle:8.10-jdk21 AS build
+FROM gradle:9.2.1-jdk21 AS build
 
 WORKDIR /app
 
 COPY . .
 
 RUN chmod +x gradlew
-RUN ./gradlew installDist --no-daemon
+
+RUN ./gradlew installDist --no-daemon --stacktrace
 
 FROM eclipse-temurin:21-jre
 
