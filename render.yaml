@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: krishishakti-backend
+    env: java
+    buildCommand: ./gradlew installDist
+    startCommand: ./build/install/krishishakti-backend/bin/krishishakti-backend
+    envVars:
+      - key: PORT
+        value: 8080
+      - key: OPENROUTER_MODEL
+        value: "google/gemma-4-31b-it:free"
+      - key: OPENROUTER_API_KEY
+        sync: false
