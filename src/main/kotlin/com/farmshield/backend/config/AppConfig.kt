@@ -3,8 +3,8 @@ package com.farmshield.backend.config
 import io.github.cdimascio.dotenv.dotenv
 
 data class AppConfig(
-    val openRouterApiKey: String,
-    val openRouterModel: String,
+    val aiApiKey: String,
+    val aiModel: String,
     val port: Int
 ) {
     companion object {
@@ -13,25 +13,25 @@ data class AppConfig(
                 ignoreIfMissing = true
             }
             
-            val apiKey = dotenv["OPENROUTER_API_KEY"]
-                ?: System.getenv("OPENROUTER_API_KEY")
+            val apiKey = dotenv["GEMINI_API_KEY"]
+                ?: System.getenv("GEMINI_API_KEY")
                 ?: throw IllegalStateException(
-                    "OPENROUTER_API_KEY is not configured. Set it in .env file or as environment variable."
+                    "GEMINI_API_KEY is not configured. Set it in .env file or as environment variable."
                 )
             
-            require(apiKey.isNotBlank() && apiKey != "your_openrouter_api_key_here") {
-                "OPENROUTER_API_KEY is not set to a valid value. Please configure your OpenRouter API key."
+            require(apiKey.isNotBlank() && apiKey != "your_gemini_api_key_here") {
+                "GEMINI_API_KEY is not set to a valid value. Please configure your Gemini API key."
             }
             
-            val model = dotenv["OPENROUTER_MODEL"]
-                ?: System.getenv("OPENROUTER_MODEL")
-                ?: "nvidia/nemotron-3.5-lightning:free"
+            val model = dotenv["GEMINI_MODEL"]
+                ?: System.getenv("GEMINI_MODEL")
+                ?: "gemini-1.5-flash"
             
             val port = (dotenv["PORT"] ?: System.getenv("PORT") ?: "8080").toIntOrNull() ?: 8080
             
             return AppConfig(
-                openRouterApiKey = apiKey,
-                openRouterModel = model,
+                aiApiKey = apiKey,
+                aiModel = model,
                 port = port
             )
         }

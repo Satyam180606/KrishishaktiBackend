@@ -5,7 +5,7 @@ import com.farmshield.backend.routes.advisoryRoutes
 import com.farmshield.backend.routes.diagnosisRoutes
 import com.farmshield.backend.service.AdvisoryService
 import com.farmshield.backend.service.DiagnosisService
-import com.farmshield.backend.service.OpenRouterService
+import com.farmshield.backend.service.GeminiService
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -23,10 +23,10 @@ fun main() {
     val config = AppConfig.load()
     
     logger.info("Starting KrishiShakti Backend on port ${config.port}")
-    logger.info("OpenRouter model: ${config.openRouterModel}")
+    logger.info("AI model: ${config.aiModel}")
     // Never log the API key
     
-    val aiService = OpenRouterService(config)
+    val aiService = GeminiService(config)
     val advisoryService = AdvisoryService(aiService)
     val diagnosisService = DiagnosisService(aiService)
     

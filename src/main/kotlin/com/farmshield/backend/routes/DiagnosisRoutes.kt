@@ -2,7 +2,7 @@ package com.farmshield.backend.routes
 
 import com.farmshield.backend.model.*
 import com.farmshield.backend.service.DiagnosisService
-import com.farmshield.backend.service.OpenRouterApiException
+import com.farmshield.backend.service.GenerativeApiException
 import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.server.application.*
@@ -109,8 +109,8 @@ fun Application.diagnosisRoutes(diagnosisService: DiagnosisService) {
                         message = e.message ?: "Invalid diagnosis request"
                     )
                 )
-            } catch (e: OpenRouterApiException) {
-                logger.error("OpenRouter API error during diagnosis: ${e.message}")
+            } catch (e: GenerativeApiException) {
+                logger.error("AI API error during diagnosis: ${e.message}")
                 call.respond(
                     HttpStatusCode.ServiceUnavailable,
                     DiagnosisApiResponse(

@@ -3,7 +3,7 @@ package com.farmshield.backend.routes
 import com.farmshield.backend.model.AdvisoryRequest
 import com.farmshield.backend.model.ErrorResponse
 import com.farmshield.backend.service.AdvisoryService
-import com.farmshield.backend.service.OpenRouterApiException
+import com.farmshield.backend.service.GenerativeApiException
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -30,8 +30,8 @@ fun Application.advisoryRoutes(advisoryService: AdvisoryService) {
                     HttpStatusCode.BadRequest,
                     ErrorResponse(error = "invalid_request", message = e.message ?: "Invalid request")
                 )
-            } catch (e: OpenRouterApiException) {
-                logger.error("OpenRouter API error: ${e.message}")
+            } catch (e: GenerativeApiException) {
+                logger.error("AI API error: ${e.message}")
                 call.respond(
                     HttpStatusCode.ServiceUnavailable,
                     ErrorResponse(
