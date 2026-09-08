@@ -7,7 +7,7 @@ services:
     envVars:
       - key: PORT
         value: 8080
-      - key: OPENROUTER_MODEL
-        value: "google/gemma-4-31b-it:free"
-      - key: OPENROUTER_API_KEY
+      - key: GEMINI_MODEL
+        value: "gemini-1.5-flash"
+      - key: GEMINI_API_KEY
         sync: false
