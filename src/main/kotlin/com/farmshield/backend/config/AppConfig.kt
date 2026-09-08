@@ -25,7 +25,7 @@ data class AppConfig(
             
             val model = dotenv["GEMINI_MODEL"]
                 ?: System.getenv("GEMINI_MODEL")
-                ?: "gemini-1.5-flash"
+                ?: "gemini-2.5-flash"
             
             val port = (dotenv["PORT"] ?: System.getenv("PORT") ?: "8080").toIntOrNull() ?: 8080
             
