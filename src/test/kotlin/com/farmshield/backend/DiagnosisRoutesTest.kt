@@ -3,7 +3,7 @@ package com.farmshield.backend
 import com.farmshield.backend.model.*
 import com.farmshield.backend.service.AdvisoryService
 import com.farmshield.backend.service.DiagnosisService
-import com.farmshield.backend.service.OpenRouterApiException
+import com.farmshield.backend.service.GenerativeApiException
 import com.farmshield.backend.service.GenerativeAIService
 import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
@@ -36,7 +36,7 @@ class DiagnosisRoutesTest {
                 prompt: String,
                 systemInstruction: String
             ): String {
-                if (shouldThrow) throw OpenRouterApiException("AI service is unavailable")
+                if (shouldThrow) throw GenerativeApiException("AI service is unavailable")
                 return diagnosisResponse ?: """
                     {
                         "crop": "Tomato",

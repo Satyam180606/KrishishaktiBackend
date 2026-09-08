@@ -3,7 +3,7 @@ package com.farmshield.backend
 import com.farmshield.backend.model.*
 import com.farmshield.backend.service.AdvisoryService
 import com.farmshield.backend.service.GenerativeAIService
-import com.farmshield.backend.service.OpenRouterApiException
+import com.farmshield.backend.service.GenerativeApiException
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
@@ -23,7 +23,7 @@ class AdvisoryRoutesTest {
     private fun createTestService(response: String? = null, shouldThrow: Boolean = false): AdvisoryService {
         val mockAI = object : GenerativeAIService {
             override suspend fun generateAdvisory(userPrompt: String, systemPrompt: String): String {
-                if (shouldThrow) throw OpenRouterApiException("OpenRouter is down")
+                if (shouldThrow) throw GenerativeApiException("AI API is down")
                 return response ?: """
                     {
                         "problem": "Test problem",
@@ -90,7 +90,7 @@ class AdvisoryRoutesTest {
         val body = response.bodyAsText()
         assertTrue(body.contains("ai_service_unavailable"))
         // Must not expose internal error messages
-        assertTrue(!body.contains("OpenRouter is down"))
+        assertTrue(!body.contains("AI API is down"))
     }
 
     @Test
